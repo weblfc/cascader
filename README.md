@@ -28,12 +28,12 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 # cascader
-使用步骤
+npm包使用步骤
 1. import cascader from "liufucheng-cascader";
 2. import "liufucheng-cascader/dist/Cascader.css";
 3. 注册 components: { cascader }
 4. 使用 < cascader :options="options" v-model="value"></>
-// options格式如下：
+5. options格式如下：
     options: [
         {
           id: "00",
