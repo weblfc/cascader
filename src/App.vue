@@ -88,7 +88,36 @@ function getDate(uid) {
     }, 800);
   });
 }
-
+// const markList = [
+//   { parentId: 0, name: "航标1", id: "0101" },
+//   { parentId: "0101", name: "航标2", id: "0201" },
+//   { parentId: "0201", name: "航标3", id: "0301" },
+//   { parentId: "0101", name: "航标4", id: "0401" },
+//   { parentId: "0401", name: "航标5", id: "0501" },
+//   { parentId: "0401", name: "航标6", id: "0601" },
+// ];
+// let add = {
+//   parentId: 0,
+//   name: "航标1",
+//   id: "0101",
+//   children: [
+//     {
+//       parentId: "0101",
+//       name: "航标2",
+//       id: "0201",
+//       children: [{ parentId: "0201", name: "航标3", id: "0301" }],
+//     },
+//     {
+//       parentId: "0101",
+//       name: "航标4",
+//       id: "0401",
+//       children: [
+//         { parentId: "0401", name: "航标5", id: "0501" },
+//         { parentId: "0401", name: "航标6", id: "0601" },
+//       ],
+//     },
+//   ],
+// };
 export default {
   name: "App",
   components: {
@@ -98,9 +127,69 @@ export default {
     return {
       value: [],
       options: [],
+      markList: [
+        {
+          parentId: 0,
+          name: "航标1",
+          id: "0101",
+          children: [],
+        },
+        {
+          parentId: "0101",
+          name: "航标2",
+          id: "0201",
+          children: [],
+        },
+        {
+          parentId: "0201",
+          name: "航标3",
+          id: "0301",
+          children: [],
+        },
+        {
+          parentId: "0101",
+          name: "航标4",
+          id: "0401",
+          children: [],
+        },
+        {
+          parentId: "0401",
+          name: "航标5",
+          id: "0501",
+          children: [],
+        },
+        {
+          parentId: "0401",
+          name: "航标6",
+          id: "0601",
+          children: [],
+        },
+        {
+          parentId: "0601",
+          name: "航标7",
+          id: "0701",
+          children: [],
+        },
+      ],
     };
   },
+  methods: {
+    getTreeList(markList) {
+      const menu = [];
+      const markMap = {};
+      markList.forEach((mark) => {
+        markMap[mark.id] = mark;
+        if (mark.parentId == 0) {
+          menu.push(mark);
+        } else if (markMap[mark.parentId]) {
+          markMap[mark.parentId].children.push(mark);
+        }
+      });
+      return menu
+    },
+  },
   mounted() {
+    this.getTreeList(this.markList);
     getDate("0").then((res) => {
       this.options = res;
     });
