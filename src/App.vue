@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <Cascader :options="options" v-model="value"></Cascader>
+    <!-- <Cascader :options="options" v-model="value"></Cascader> -->
+    <Map></Map>
   </div>
 </template>
 
 <script>
-import Cascader from "./components/Cascader.vue";
+// import Cascader from "./components/Cascader.vue";
+import Map from "./components/map/index.vue";
 
 const result = [
   {
@@ -118,10 +120,12 @@ function getDate(uid) {
 //     },
 //   ],
 // };
+
 export default {
   name: "App",
   components: {
-    Cascader,
+    // Cascader,
+    Map,
   },
   data() {
     return {
@@ -185,7 +189,7 @@ export default {
           markMap[mark.parentId].children.push(mark);
         }
       });
-      return menu
+      return menu;
     },
   },
   mounted() {
@@ -197,5 +201,28 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scode>
+body,
+html,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      box-sizing: border-box;
+    }
+  }
+  -webkit-user-select: none;
+
+  -moz-user-select: none;
+
+  -ms-user-select: none;
+
+  user-select: none;
+}
 </style>
