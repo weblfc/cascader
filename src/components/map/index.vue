@@ -18,7 +18,7 @@
             :is="currentTabComponent"
             @currentMap="currentMap"
             @addMark="addMark"
-            :map="map"
+            :layerTabs="layerTabs"
           ></component>
         </keep-alive>
       </div>
@@ -31,6 +31,10 @@ import L from "leaflet";
 import sourceCpn from "./children/source.vue";
 import cascadingCpn from "./children/cascading.vue";
 import toolCpn from "./children/tool.vue";
+import feijiImg from "../../assets/layler-img/feiji.png";
+import tankeImg from "../../assets/layler-img/tanke.png";
+import dapaoImg from "../../assets/layler-img/dapao.png";
+import { feiji, tanke, dapao } from "./geojson";
 
 export default {
   data() {
@@ -41,8 +45,30 @@ export default {
         { name: "图层", components: "cascading" },
         { name: "工具", components: "tool" },
       ],
-      addd: [],
-      map: "",
+      layerTabs: [
+        {
+          name: "飞机",
+          data: feiji,
+          isActive: true,
+          mark: feijiImg,
+          layler: undefined,
+        },
+        {
+          name: "坦克",
+          data: tanke,
+          isActive: false,
+          mark: tankeImg,
+          layler: undefined,
+        },
+        {
+          name: "大炮",
+          data: dapao,
+          isActive: false,
+          mark: dapaoImg,
+          layler: undefined,
+        },
+      ],
+      map: '',
       geoLayer: undefined,
     };
   },
@@ -57,29 +83,59 @@ export default {
     },
   },
   methods: {
+    creatLayler(imgUrl, data) {
+      return new L.GeoJSON(data, {
+        pointToLayer: (geoJsonPoint, latlng) => {
+          const myIcon = L.icon({
+            iconUrl: imgUrl,
+            iconSize: [48, 48],
+            iconAnchor: [24, 48],
+          });
+          return L.marker(latlng, {
+            icon: myIcon,
+          });
+        },
+      });
+    },
     // 切换地图
     currentMap(mapSource) {
-      this.map.eachLayer((layer) => {
-        layer.remove();
+      this.map.eachLayer((layler) => {
+        layler.remove();
       });
       L.tileLayer(mapSource.mapUrl).addTo(this.map);
-      if (this.geoLayer) {
-        this.geoLayer.addTo(this.map);
-      }
+      this.layerTabs.forEach((ele) => {
+        if (ele.isActive) {
+          ele.layler.addTo(this.map);
+        }
+      });
     },
-    addMark(geoLayer) {
-      this.geoLayer = geoLayer;
-      geoLayer.addTo(this.map);
+    // 添加标记
+    addMark(item) {
+      if (item.isActive) {
+        if (item.layler != undefined) {
+          item.layler.removeFrom(this.map);
+        }
+        item.layler = this.creatLayler(item.mark, item.data);
+        item.layler.addTo(this.map);
+      } else {
+        item.layler.removeFrom(this.map);
+      }
     },
     // 初始化地图
     initMap() {
       this.map = L.map("map", {
         center: [39.9, 116.39],
-        zoom: 8,
+        zoom: 6,
       });
       L.tileLayer(
         "http://rt0.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0"
       ).addTo(this.map);
+      this.layerTabs.forEach((ele) => {
+        if (ele.isActive) {
+          ele.layler = this.creatLayler(ele.mark, ele.data);
+          ele.layler.addTo(this.map);
+        }
+      });
     },
   },
   mounted() {
