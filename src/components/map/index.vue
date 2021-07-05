@@ -19,6 +19,7 @@
             @currentMap="currentMap"
             @addMark="addMark"
             :layerTabs="layerTabs"
+            :map="map"
           ></component>
         </keep-alive>
       </div>
@@ -68,7 +69,7 @@ export default {
           layler: undefined,
         },
       ],
-      map: '',
+      map: "",
       geoLayer: undefined,
     };
   },
@@ -127,6 +128,7 @@ export default {
         center: [39.9, 116.39],
         zoom: 6,
       });
+      L.PM.setOptIn(true);
       L.tileLayer(
         "http://rt0.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0"
       ).addTo(this.map);

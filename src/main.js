@@ -4,6 +4,8 @@ import {
 } from "ant-design-vue"
 import 'ant-design-vue/dist/antd.css';
 import App from './App.vue';
+import '@geoman-io/leaflet-geoman-free';  
+import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';  
 
 Vue.use(Checkbox)
 

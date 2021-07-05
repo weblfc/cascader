@@ -10,6 +10,7 @@
     "dist": "vue-cli-service build --target lib --name Cascader ./src/components/Cascader.vue"
   },
   "dependencies": {
+    "@geoman-io/leaflet-geoman-free": "^2.11.2",
     "ant-design-vue": "^1.7.6",
     "core-js": "^3.6.5",
     "leaflet": "^1.7.1",

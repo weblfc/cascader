@@ -10,7 +10,7 @@
         <li
           v-for="(item, index) of layerTabs"
           :key="index"
-          @click="toggleMark(item, index)"
+          @click="toggleMark(item)"
           :class="{ active: item.isActive }"
         >
           {{ item.name }}
@@ -36,36 +36,19 @@ export default {
     };
   },
   methods: {
-    toggleMark(item, index) {
-      this.layerTabs[index].isActive = !item.isActive;
-
-      const isChecked = this.layerTabs.every((ele) => ele.isActive == true);
-      // const isChecked = this.tabs.every((ele) => ele.isActive == true);
-      if (isChecked) {
-        this.isSelect = true;
-      } else {
-        this.isSelect = false;
-      }
+    toggleMark(item) {
+      item.isActive = !item.isActive;
+      this.isSelect = this.layerTabs.every((ele) => ele.isActive == true);
       this.$emit("addMark", item);
     },
     onChange() {
       // 判断是否满足条件
-      const isChecked = this.layerTabs.every((ele) => ele.isActive == true);
-      if (isChecked) {
-        this.layerTabs.forEach((ele, index) => {
-          this.layerTabs[index].isActive = this.isSelect;
-        });
-      } else {
-        this.layerTabs.forEach((ele, index) => {
-          this.layerTabs[index].isActive = this.isSelect;
-        });
-      }
       this.layerTabs.forEach((ele) => {
+        ele.isActive = this.isSelect;
         this.$emit("addMark", ele);
       });
     },
   },
-  mounted() {},
 };
 </script>
 
